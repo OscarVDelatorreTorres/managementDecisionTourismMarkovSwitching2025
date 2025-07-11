@@ -1,26 +1,10 @@
 ---
 title: "Introduction"
 author: "Dr. Oscar V. De la Torre Torres"
-format: html
 ---
 
-## Quarto
+# Introduction
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+This ebook is the research documentation published in a private GitHub repository for replication purposes and as supplementary material for the paper **A two-regime Markov-switching and news sentiment algorithm for leisure and entertainment tourism stocks and volatility index futures**, published in the journal [Management decision in the **** special number](https://www.emerald.com/insight/publication/issn/0025-1747).
 
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
-```
-
-You can add options to executable code like this 
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
+The present book supports
