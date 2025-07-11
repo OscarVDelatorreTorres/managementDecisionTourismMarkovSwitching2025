@@ -1,0 +1,34 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Markov Switching Leisure & Enterteinment and VIX Markov-Switching investing"
+  author: "Dr. Oscar V. De la Torre-Torres"
+  date: "07/10/2025"
+  chapters:
+    - index.qmd
+    - part: "Data Gathering and processing"
+      chapters:
+        - datagathering.qmd
+        - backtests.qmd
+    - part: "References"
+      chapters:
+        - references.qmd
+  page-footer: "Copyright 2025: Oscar Valdemar De la Torre Torres. All rights reserved."
+
+bibliography: biblio.bib
+csl: cya.csl
+toc_depth: 4
+
+format:
+  html:
+    theme: united
+#  pdf:
+ #    documentclass: scrreprt
+
+title-block-banner: true
+title-block-banner-color: "orange"
+
+editor: source
+lang: es-Es
