@@ -10,7 +10,7 @@ book:
         name: Carnegie Mellon University
     - name: John Hamm
       affiliations:
-      - name: University of California, San Diego
+        name: University of California, San Diego
 
   date: "07/10/2025"
   chapters:

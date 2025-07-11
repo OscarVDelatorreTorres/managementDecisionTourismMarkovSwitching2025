@@ -1,6 +1,5 @@
 ---
 title: "Introduction"
-author: "Dr. Oscar V. De la Torre Torres"
 ---
 
 # Introduction
