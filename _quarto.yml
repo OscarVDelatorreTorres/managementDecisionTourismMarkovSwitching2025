@@ -4,7 +4,11 @@ project:
 
 book:
   title: "Markov Switching Leisure & Enterteinment and VIX Markov-Switching investing"
-  author: "Dr. Oscar V. De la Torre-Torres"
+  author:
+    - name: "Oscar Valdemar De la Torre Torres"
+      affiliation: "Universidad Michoacana de San Nicolás de hidalgo"
+      orcid: "0000-0002-1234-5678"
+      email: "oscar.delatorre.torres@umich.mx"
   date: "07/10/2025"
   chapters:
     - index.qmd
