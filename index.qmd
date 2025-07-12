@@ -4,8 +4,85 @@ title: "Introduction"
 
 # Introduction
 
-This ebook is the research documentation published in a private GitHub repository for replication purposes and as supplementary material for the paper **A two-regime Markov-switching and news sentiment algorithm for leisure and entertainment tourism stocks and volatility index futures**, published in the journal [Management decision in the **** special number](https://www.emerald.com/insight/publication/issn/0025-1747).
+This site is for the research documentation published in a private GitHub repository for replication purposes and as supplementary material for the paper **A two-regime Markov-switching, new sentiment multinomial algorithm for leisure and entertainment tourism stocks and volatility index trading**, published in the journal [Management decision in the **** special number](https://www.emerald.com/insight/publication/issn/0025-1747).
 
-The present book gives a detail of how id the authors collected and processed the input data and gives to the reader the steps and `R` code used to estimate the Markov-switching model and the logit model (OLS and ntueralnetwork) used to forecast the regime with the news sentiment indexes.
+The present site gives a detail of how id the authors collected and processed the input data and gives to the reader the steps and `R` code used to estimate the Markov-switching model and the logit model used to forecast the regime with the news sentiment indexes.
 
+The working hypothesis tested in the paper is the following:
 
+$H_0:$ The use of the use of a 3 news sentiment multinomial model with two-regime Markov swicthing models leads to a better performance in a PEJ and VIX portfolio against a buy-and-hold strategy.
+
+To test such a hypothesis, the authors used the Invesco leisure and enterteinment (ticker PEJ) exchange traded fund (ETF), which tracks the performance of the Intellidex Dynamic Leisure & Entertainment index (ticker DZL) and the ProShares Trust VIX Short-Term Futures (ticker VIXY) ETF, which tracks the performance of the Chicago Board of Trade's (CBOT) S&P 500 VIX Short-Term Futures index. An index of the implied volatility of all at-the-money traded puts and calls in such exchange.
+
+The rationale is to follow trhee test stepts:
+
+1. To use the cointinous time return $r_t$ of the PEJ to tag each observation with positive and negative values:
+
+$$
+D_t=\left\{
+\begin{array}{r}
+up \text{ if } r_t > 0 \\
+down \text{ if } r_t < 0
+\end{array} \right.
+$${#eq-upDwonTag}
+
+2. To estimate a symmetric a homogeneous t-Student two-regime MS model to forecast de probability $\xi_{s=2,t}$ of being in a high volatility at $t+1$:
+
+$$
+S_t=\left\{
+\begin{array}{r}
+high \text{ if } \xi_{s=2,t} > 0.5 \\
+low \text{ if } \xi_{s=2,t} \leq 0.5
+\end{array} \right.
+$${#eq-msModelTag}
+
+3. To tag each return and/or volatility scenario with the following flag for the logit or multinomial logit model:
+
+  a. $$
+S_t=\left\{
+\begin{array}{r}
+down \text{ if } r_t < 0 \\
+up \text{ if } r_t\geq 0
+\end{array} \right.
+$${#eq-logitTag1}
+
+  b. $$
+S_t=\left\{
+\begin{array}{r}
+down \text{ if } r_t < 0 \\
+up \text{ if } r_t\geq 0
+\end{array} \right.
+$${#eq-logitTag2}
+  
+  c. $$
+S_t=\left\{
+\begin{array}{l}
+\text{down if } r_t<0 \\
+\text{up with low volatility if } r_t>0\text{ and }\xi_{s=2,t} \leq 0.5\\ 
+\text{up with high volatility if } r_t>0\text{ and }\xi_{s=2,t} > 0.5
+\end{array} \right.
+$${#eq-logitTag3}
+
+  d.  $$
+S_t=\left\{
+\begin{array}{l}
+\text{down with low volatility if } r_t<0\text{ and }\xi_{s=2,t} \leq 0.5\\ 
+\text{down with high volatility if } r_t<0\text{ and }\xi_{s=2,t} > 0.5\\
+\text{up if } r_t>0 
+\end{array} \right.
+$${#eq-logitTag4}
+
+  e. $$
+S_t=\left\{
+\begin{array}{l}
+\text{down with low volatility if } r_t>0\text{ and }\xi_{s=2,t} \leq 0.5\\ 
+\text{down with high volatility if } r_t>0\text{ and }\xi_{s=2,t} > 0.5
+\text{up with low volatility if } r_t>0\text{ and }\xi_{s=2,t} \leq 0.5\\ 
+\text{up with high volatility if } r_t>0\text{ and }\xi_{s=2,t} > 0.5
+\end{array} \right.
+$${#eq-logitTag5}
+
+4.
+s
+
+s
