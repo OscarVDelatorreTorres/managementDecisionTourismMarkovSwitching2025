@@ -5,12 +5,13 @@ project:
 book:
   title: "Markov Switching Leisure & Enterteinment and VIX Markov-Switching investing"
   author:
-    - name: Norah Jones
+    - name: Dr. Oscar V. De la Torre-Torres
       affiliations:
-        name: Carnegie Mellon University
-    - name: John Hamm
+        name: Universidad Michoacana de San Nicolás de Hidalgo
+      email: oscar.delatorre.torres@umich.mx
+    - name: M.C. Rodolfo López-Torres
       affiliations:
-        name: University of California, San Diego
+        name: Universidad Michoacana de San Nicolás de Hidalgo
 
   date: "07/10/2025"
   chapters:
