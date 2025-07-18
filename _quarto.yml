@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 book:
-  title: "A two-regime Markov-Switching trading algorithm for US Leisure & Enterteinment stocks"
+  title: "A two-regime Markov-Switching GARCH trading algorithm for US Leisure & Enterteinment stocks"
   author:
     - name: Dr. Oscar V. De la Torre-Torres
       affiliations:
