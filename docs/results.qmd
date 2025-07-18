@@ -1,0 +1,9 @@
+---
+title: "Results analysis"
+author: "Dr. Oscar V. De la Torre Torres"
+format: html
+---
+
+# backtest results
+
+bla bla bla...

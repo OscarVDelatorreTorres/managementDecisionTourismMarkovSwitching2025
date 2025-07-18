@@ -43,4 +43,7 @@ $${#eq-smoothProbForecast}
 
 Where $\pi$ is the transition matrix of the Markov-switching model, $\xi_{s=1,t}$ is the smoothed probability of being in the low volatility regime at $t$, and $\xi_{s=2,t}$ is the probability of being in the high volatility regime at $t$.
 
-
+This supplementary material's site is structured with the following sections:
+- [Data gathering and processing](datagathering.qmd): Details the data gathering and processing steps.
+- [Markov-switching model estimation, trading backtest and results](results.qmd): Details the steps to estimate the Markov-switching model and the trading rule and executes the code to estimate the model and the trading rule.
+- [References](references.qmd): Lists the references used in this site.

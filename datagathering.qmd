@@ -4,6 +4,6 @@ author: "Dr. Oscar V. De la Torre Torres"
 format: html
 ---
 
-# Data gathering and processing method
+# Data gathering and processing method{#dataGathering}
 
-bla bla bla...
+
