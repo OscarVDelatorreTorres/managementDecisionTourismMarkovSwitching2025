@@ -10,7 +10,7 @@
 <meta name="author" content="José Álvarez-García">
 <meta name="dcterms.date" content="2025-07-10">
 
-<title>Markov Switching Leisure &amp; Enterteinment and VIX Markov-Switching investing</title>
+<title>A two-regime Markov-Switching trading algorithm for US Leisure &amp; Enterteinment stocks</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,7 +23,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -141,7 +161,7 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Markov Switching Leisure &amp; Enterteinment and VIX Markov-Switching investing</h1>
+      <h1 class="title">A two-regime Markov-Switching trading algorithm for US Leisure &amp; Enterteinment stocks</h1>
                       </div>
   </div>
     
@@ -186,7 +206,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Markov Switching Leisure &amp; Enterteinment and VIX Markov-Switching investing</a> 
+      <a href="./">A two-regime Markov-Switching trading algorithm for US Leisure &amp; Enterteinment stocks</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -265,82 +285,32 @@ window.Quarto = {
 
 <section id="introduction" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
-<p>This site is for the research documentation published in a private GitHub repository for replication purposes and as supplementary material for the paper <strong>A two-regime Markov-switching, new sentiment multinomial algorithm for leisure and entertainment tourism stocks and volatility index trading</strong>, published in the journal <a href="https://www.emerald.com/insight/publication/issn/0025-1747">Management decision in the **** special number</a>.</p>
-<p>The present site gives a detail of how id the authors collected and processed the input data and gives to the reader the steps and <code>R</code> code used to estimate the Markov-switching model and the logit model used to forecast the regime with the news sentiment indexes.</p>
-<p>The working hypothesis tested in the paper is the following:</p>
-<p><span class="math inline">\(H_0:\)</span> The use of the use of a 3 news sentiment multinomial model with two-regime Markov swicthing models leads to a better performance in a PEJ and VIX portfolio against a buy-and-hold strategy.</p>
-<p>To test such a hypothesis, the authors used the Invesco leisure and enterteinment (ticker PEJ) exchange traded fund (ETF), which tracks the performance of the Intellidex Dynamic Leisure &amp; Entertainment index (ticker DZL) and the ProShares Trust VIX Short-Term Futures (ticker VIXY) ETF, which tracks the performance of the Chicago Board of Trade’s (CBOT) S&amp;P 500 VIX Short-Term Futures index. An index of the implied volatility of all at-the-money traded puts and calls in such exchange.</p>
-<p>The rationale is to follow trhee test stepts:</p>
-<ol type="1">
-<li>To use the cointinous time return <span class="math inline">\(r_t\)</span> of the PEJ to tag each observation with positive and negative values:</li>
-</ol>
-<p><span id="eq-upDwonTag"><span class="math display">\[
-D_t=\left\{
-\begin{array}{r}
-up \text{ if } r_t &gt; 0 \\
-down \text{ if } r_t &lt; 0
-\end{array} \right.
-\tag{1.1}\]</span></span></p>
-<ol start="2" type="1">
-<li>To estimate a symmetric a homogeneous t-Student two-regime MS model to forecast de probability <span class="math inline">\(\xi_{s=2,t}\)</span> of being in a high volatility at <span class="math inline">\(t+1\)</span>:</li>
-</ol>
+<p>This site is for the research documentation published in a private GitHub repository for replication purposes and as supplementary material for the paper <strong>A two-regime Markov-switching, new sentiment multinomial algorithm for leisure and entertainment tourism stocks</strong>, published in the journal <a href="https://www.emerald.com/insight/publication/issn/0025-1747">Management decision in the **** special number</a>.</p>
+<p>The present site gives a detail of how did the authors collected and processed the input data and gives to the reader the steps and <code>R</code> code used to estimate the Markov-switching model to forecast the probability <span class="math inline">\(\xi_{s=2,t+1}\)</span> of being in the high volatility regime at <span class="math inline">\(t+1\)</span>. Also details the steps for the following trading rule with these forecasted volatilities:</p>
 <p><span id="eq-msModelTag"><span class="math display">\[
 S_t=\left\{
-\begin{array}{r}
-high \text{ if } \xi_{s=2,t} &gt; 0.5 \\
-low \text{ if } \xi_{s=2,t} \leq 0.5
-\end{array} \right.
-\tag{1.2}\]</span></span></p>
-<ol start="3" type="1">
-<li>To tag each return and/or volatility scenario with the following flag for the logit or multinomial logit model:</li>
-</ol>
-<ol type="a">
-<li><p><span id="eq-logitTag1"><span class="math display">\[
-S_t=\left\{
-\begin{array}{r}
-down \text{ if } r_t &lt; 0 \\
-up \text{ if } r_t\geq 0
-\end{array} \right.
-\tag{1.3}\]</span></span></p></li>
-<li><p><span id="eq-logitTag2"><span class="math display">\[
-S_t=\left\{
-\begin{array}{r}
-down \text{ if } r_t &lt; 0 \\
-up \text{ if } r_t\geq 0
-\end{array} \right.
-\tag{1.4}\]</span></span></p></li>
-<li><p><span id="eq-logitTag3"><span class="math display">\[
-S_t=\left\{
 \begin{array}{l}
-\text{down if } r_t&lt;0 \\
-\text{up with low volatility if } r_t&gt;0\text{ and }\xi_{s=2,t} \leq 0.5\\
-\text{up with high volatility if } r_t&gt;0\text{ and }\xi_{s=2,t} &gt; 0.5
+\text{Sell if } \xi_{s=2,t} &gt; 0.5 \\
+\text{Buy or hold if } \xi_{s=2,t} \leq 0.5
 \end{array} \right.
-\tag{1.5}\]</span></span></p></li>
-<li><p><span id="eq-logitTag4"><span class="math display">\[
-S_t=\left\{
-\begin{array}{l}
-\text{down with low volatility if } r_t&lt;0\text{ and }\xi_{s=2,t} \leq 0.5\\
-\text{down with high volatility if } r_t&lt;0\text{ and }\xi_{s=2,t} &gt; 0.5\\
-\text{up if } r_t&gt;0
-\end{array} \right.
-\tag{1.6}\]</span></span></p></li>
-<li><p><span id="eq-logitTag5"><span class="math display">\[
-S_t=\left\{
-\begin{array}{l}
-\text{down with low volatility if } r_t&gt;0\text{ and }\xi_{s=2,t} \leq 0.5\\
-\text{down with high volatility if } r_t&gt;0\text{ and }\xi_{s=2,t} &gt; 0.5
-\text{up with low volatility if } r_t&gt;0\text{ and }\xi_{s=2,t} \leq 0.5\\
-\text{up with high volatility if } r_t&gt;0\text{ and }\xi_{s=2,t} &gt; 0.5
-\end{array} \right.
-\tag{1.7}\]</span></span></p></li>
+\tag{1.1}\]</span></span></p>
+<p>The core idea is to estimate the probability <span class="math inline">\(\xi_{s=2,t+1}\)</span> from a sequential selection of the MS-GARCH models of the following at <span class="math inline">\(t\)</span>::</p>
+<ol type="1">
+<li>A symmetric Student-T log-likelihood function (LLF) with a homogeneous time-fixed volatility.</li>
+<li>A symmetric Student-T log-likelihood function (LLF) with a homogeneous symmetric GARCH volatility.</li>
+<li>An symmetric Student-T log-likelihood function (LLF) with a homogeneous asymmetric EGARCH volatility.</li>
+<li>An asymmetric Student-T log-likelihood function (LLF) with a homogeneous time-fixed volatility.</li>
+<li>An asymmetric Student-T log-likelihood function (LLF) with a homogeneous symmetric GARCH volatility.</li>
+<li>An asymmetric Student-T log-likelihood function (LLF) with a homogeneous asymmetric EGARCH volatility.</li>
 </ol>
-<ol start="4" type="1">
-<li>s</li>
-</ol>
-<p>s</p>
+<p>From these models, the authors select the one with the lowest Akaike <span class="citation" data-cites="Royall1997">(<a href="#ref-Royall1997" role="doc-biblioref">1974</a>)</span> value and use it to estimate the probability <span class="math inline">\(\xi_{s=2,t+1}\)</span> of being in the high volatility regime at <span class="math inline">\(t+1\)</span>.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Royall1997" class="csl-entry" role="listitem">
+Akaike, Hirotugu. 1974. <span>“A New Look at the Statistical Model Identification.”</span> <em>IEEE Transactions on Automatic Control</em> 19 (6): 716–23. <a href="https://doi.org/10.1016/J.CUB.2017.09.001">https://doi.org/10.1016/J.CUB.2017.09.001</a>.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->

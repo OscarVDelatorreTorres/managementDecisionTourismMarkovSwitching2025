@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 book:
-  title: "Markov Switching Leisure & Enterteinment and VIX Markov-Switching investing"
+  title: "A two-regime Markov-Switching trading algorithm for US Leisure & Enterteinment stocks"
   author:
     - name: Dr. Oscar V. De la Torre-Torres
       affiliations:
@@ -25,8 +25,7 @@ book:
         - references.qmd
   page-footer: "Copyright 2025: Oscar Valdemar De la Torre Torres. All rights reserved."
 
-bibliography: biblio.bib
-csl: cya.csl
+bibliography: ref.bib
 toc_depth: 4
 
 format:
