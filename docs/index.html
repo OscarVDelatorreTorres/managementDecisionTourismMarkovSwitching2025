@@ -283,25 +283,33 @@ window.Quarto = {
 
 
 
+<div class="cell">
+<p>::: {.cell-output .cell-output-stdout}</p>
+<pre><code>[1] "All the R libraries used in the research are installed and loaded"</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "All the quantitative finance functions loaded..."</code></pre>
+</div>
+<p>:::</p>
 <section id="introduction" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
 <p>This site is for the research documentation published in a private GitHub repository for replication purposes and as supplementary material for the paper <strong>A two-regime Markov-switching, new sentiment multinomial algorithm for leisure and entertainment tourism stocks</strong>, published in the journal <a href="https://www.emerald.com/insight/publication/issn/0025-1747">Management decision in the **** special number</a>.</p>
-<p>The present site gives a detail of how did the authors collected and processed the input data and gives to the reader the steps and <code>R</code> code used to estimate the Markov-switching model to forecast the probability <span class="math inline">\(\xi_{s=2,t+1}\)</span> of being in the high volatility regime at <span class="math inline">\(t+1\)</span>. Also details the steps for the following trading rule with these forecasted volatilities:</p>
+<p>The present site gives a detail of how did the authors collected and processed the input data and gives to the reader the steps and <code>R</code> code used to estimate the Markov-switching GARCH <span class="citation" data-cites="Hamitlon1989 Haas2004a Haas2004a Ardia2018 Ardia2018 Ardia2016">(<a href="#ref-Hamitlon1989" role="doc-biblioref">Hamilton 1989</a>; <a href="#ref-Haas2004a" role="doc-biblioref">Haas, Mittnik, and Paolella 2004</a>, <a href="#ref-Haas2004a" role="doc-biblioref">2004</a>; <a href="#ref-Ardia2018" role="doc-biblioref">Ardia et al. 2018</a>, <a href="#ref-Ardia2018" role="doc-biblioref">2018</a>, <a href="#ref-Ardia2016" role="doc-biblioref">2019</a>)</span> model to forecast the probability <span class="math inline">\(\xi_{s=2,t+1}\)</span> of being in the high volatility regime at <span class="math inline">\(t+1\)</span> in the Intellidex Dynamic Leisure and Enerteinment index (DZL). The core idea is to backtest a trading rule based on the forecasted volatility of the DZL index to invest in the Invesco Leisure and Entertainment exchange traded fund (ETF) (PEJ) or in 3-month U.S. Treasury bills, depending on the forecasted volatility regime. The following trading rule summarises the trading strategy:</p>
 <p><span id="eq-msModelTag"><span class="math display">\[
 S_t=\left\{
 \begin{array}{l}
-\text{Sell if } \xi_{s=2,t} &gt; 0.5 \\
-\text{Buy or hold if } \xi_{s=2,t} \leq 0.5
+\text{To buy 3-month U.S. Treasury bills if } \xi_{s=2,t} &gt; 0.5 \\
+\text{To Buy the PEJ if } \xi_{s=2,t} \leq 0.5
 \end{array} \right.
 \tag{1.1}\]</span></span></p>
 <p>The core idea is to estimate the probability <span class="math inline">\(\xi_{s=2,t+1}\)</span> from a sequential selection of the MS-GARCH models of the following at <span class="math inline">\(t\)</span>::</p>
 <ol type="1">
 <li>A symmetric Student-T log-likelihood function (LLF) with a homogeneous time-fixed volatility.</li>
-<li>A symmetric Student-T log-likelihood function (LLF) with a homogeneous symmetric GARCH volatility.</li>
-<li>An symmetric Student-T log-likelihood function (LLF) with a homogeneous asymmetric EGARCH volatility.</li>
-<li>An asymmetric Student-T log-likelihood function (LLF) with a homogeneous time-fixed volatility.</li>
-<li>An asymmetric Student-T log-likelihood function (LLF) with a homogeneous symmetric GARCH volatility.</li>
-<li>An asymmetric Student-T log-likelihood function (LLF) with a homogeneous asymmetric EGARCH volatility.</li>
+<li>A symmetric Student-T LLF with a homogeneous symmetric GARCH volatility.</li>
+<li>An symmetric Student-T LLF with a homogeneous asymmetric EGARCH volatility.</li>
+<li>An asymmetric Student-T LLF with a homogeneous time-fixed volatility.</li>
+<li>An asymmetric Student-T LLF with a homogeneous symmetric GARCH volatility.</li>
+<li>An asymmetric Student-T LLF with a homogeneous asymmetric EGARCH volatility.</li>
 </ol>
 <p>From these models, the authors selected the one with the lowest Akaike <span class="citation" data-cites="Royall1997">(<a href="#ref-Royall1997" role="doc-biblioref">1974</a>)</span> value and use it to estimate the probability <span class="math inline">\(\xi_{s=2,t+1}\)</span> of being in the high volatility regime at <span class="math inline">\(t+1\)</span> as follows:</p>
 <p><span id="eq-smoothProbForecast"><span class="math display">\[
@@ -318,12 +326,29 @@ S_t=\left\{
 \right]
 \tag{1.2}\]</span></span></p>
 <p>Where <span class="math inline">\(\pi\)</span> is the transition matrix of the Markov-switching model, <span class="math inline">\(\xi_{s=1,t}\)</span> is the smoothed probability of being in the low volatility regime at <span class="math inline">\(t\)</span>, and <span class="math inline">\(\xi_{s=2,t}\)</span> is the probability of being in the high volatility regime at <span class="math inline">\(t\)</span>.</p>
-<p>This supplementary material’s site is structured with the following sections: - <a href="./datagathering.html">Data gathering and processing</a>: Details the data gathering and processing steps. - <a href="results.qmd">Markov-switching model estimation, trading backtest and results</a>: Details the steps to estimate the Markov-switching model and the trading rule and executes the code to estimate the model and the trading rule. - <a href="./references.html">References</a>: Lists the references used in this site.</p>
+<p>This supplementary material’s site is structured with the following sections:</p>
+<ul>
+<li><a href="./datagathering.html">Data gathering and processing</a>: Details the data gathering and processing steps.</li>
+<li><a href="results.qmd">Markov-switching model estimation, trading backtest and results</a>: Details the steps to estimate the Markov-switching model and the trading rule and executes the code to estimate the model and the trading rule.</li>
+<li><a href="./references.html">References</a>: Lists the references used in this site.</li>
+</ul>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-Royall1997" class="csl-entry" role="listitem">
 Akaike, Hirotugu. 1974. <span>“A New Look at the Statistical Model Identification.”</span> <em>IEEE Transactions on Automatic Control</em> 19 (6): 716–23. <a href="https://doi.org/10.1016/J.CUB.2017.09.001">https://doi.org/10.1016/J.CUB.2017.09.001</a>.
+</div>
+<div id="ref-Ardia2018" class="csl-entry" role="listitem">
+Ardia, David, Keven Bluteau, Kris Boudt, and Leopoldo Catania. 2018. <span>“Forecasting Risk with <span>Markov</span>-Switching <span>GARCH</span> Models:<span>A</span> Large-Scale Performance Study.”</span> <em>International Journal of Forecasting</em> 34 (4): 733–47. <a href="https://doi.org/10.1016/j.ijforecast.2018.05.004">https://doi.org/10.1016/j.ijforecast.2018.05.004</a>.
+</div>
+<div id="ref-Ardia2016" class="csl-entry" role="listitem">
+Ardia, David, Keven Bluteau, Kris Boudt, Leopoldo Catania, and Denis–Alexandre Trottier. 2019. <span>“Markov–<span>Switching</span> <span>GARCH</span> <span>Models</span> in <span>R</span>: <span>The</span> <span>MSGARCH</span> <span>Package</span>.”</span> <em>Journal of Statistical Software</em> 91 (4): 1–39. https://doi.org/<a href="http://dx.doi.org/10.18637/jss.v091.i04">http://dx.doi.org/10.18637/jss.v091.i04</a>.
+</div>
+<div id="ref-Haas2004a" class="csl-entry" role="listitem">
+Haas, Markus, Stefan Mittnik, and Marc S Paolella. 2004. <span>“A New Approach to <span>Markov</span>-<span>Switching</span> <span>GARCH</span> Models.”</span> <em>Journal of Financial Econometrics</em> 2 (4): 493–530.
+</div>
+<div id="ref-Hamitlon1989" class="csl-entry" role="listitem">
+Hamilton, James D. 1989. <span>“A New Approach to the Economic Analysis of Nonstationary Time Series and the Business Cycle.”</span> <em>Econometrica</em> 57 (2): 357–84. https://doi.org/<a href="https://doi.org/10.2307/1912559">https://doi.org/10.2307/1912559</a>.
 </div>
 </div>
 </section>

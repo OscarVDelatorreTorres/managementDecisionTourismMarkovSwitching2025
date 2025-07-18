@@ -1,9 +1,63 @@
 ---
 title: "Data gathering and processing"
-author: "Dr. Oscar V. De la Torre Torres"
 format: html
 ---
 
-# Data gathering and processing method{#dataGathering}
+```{r libresriesSetup, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+source("https://drive.google.com/uc?export=download&id=12rhI5aMny5hRGhdORztYpNZ2YbJi4wmA")
+```
+
+To perform the simulations, the authors retrieved the weekly historical data of the following time series from Refinitiv [-@refinitivRefinitivEikon2025]:
 
 
+:::{#tbl-Table1}
+```{r table1, echo=FALSE}
+table1=data.frame(tickerPaper=c("DZL","PEJ","BIL"),
+                  name=c("Intellidex Dynamic Leisure and Enerteinment index",
+                         "Invesco Dynamic Leisure and Entertainment ETF",
+                         "SPDR Bloomberg 1-3 Month T-Bill ETF"),
+                  startDate=c("2005-06-05","2005-06-05","2025-05-07"),
+                  endDate=c("2025-07-14","2025-07-14","2025-07-14")
+                  )
+datatable(table1, 
+              extensions = 'Buttons',
+              options = list(dom = 'Bfrtip',
+            buttons = 
+      list('copy', 'print', list(
+        extend = 'collection',
+        buttons = c('csv', 'excel', 'pdf'),
+        text = 'Download'
+              ))),
+              rownames = FALSE,
+              caption = "Table 1: Time series used in the simulations")
+```
+:::
+
+@#tbl-Table2 shows the data gatered and ##tbl-Table3 shows the statistical summary of the input data.
+
+:::{#tbl-Table2}
+```{r table2, echo=FALSE}
+table2=read.xlsx("inputData/inputdata.xlsx")
+table2$Date=as.Date(table2$Date,origin="1899-12-30")
+datatable(table2, 
+              extensions = 'Buttons',
+              options = list(dom = 'Bfrtip',
+            buttons = 
+      list('copy', 'print', list(
+        extend = 'collection',
+        buttons = c('csv', 'excel', 'pdf'),
+        text = 'Download'
+              ))),
+              rownames = FALSE,
+              caption = "Table 2: Historical price (level) data of the time series used in the simulations")
+```
+
+
+:::
+
+
+:::{#tbl-Table3}
+
+
+
+:::

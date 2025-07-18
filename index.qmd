@@ -1,29 +1,32 @@
 ---
 title: "Introduction"
 ---
+```{r libresriesSetup, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+source("https://drive.google.com/uc?export=download&id=12rhI5aMny5hRGhdORztYpNZ2YbJi4wmA")
+```
 
 # Introduction
 
 This site is for the research documentation published in a private GitHub repository for replication purposes and as supplementary material for the paper **A two-regime Markov-switching, new sentiment multinomial algorithm for leisure and entertainment tourism stocks**, published in the journal [Management decision in the **** special number](https://www.emerald.com/insight/publication/issn/0025-1747).
 
-The present site gives a detail of how did the authors collected and processed the input data and gives to the reader the steps and `R` code used to estimate the Markov-switching model to forecast the probability $\xi_{s=2,t+1}$ of being in the high volatility regime at $t+1$. Also details the steps for the following trading rule with these forecasted volatilities:
+The present site gives a detail of how did the authors collected and processed the input data and gives to the reader the steps and `R` code used to estimate the Markov-switching GARCH [@Hamitlon1989; @Haas2004a; @Haas2004a; @Ardia2018; @Ardia2018; @Ardia2016] model to forecast the probability $\xi_{s=2,t+1}$ of being in the high volatility regime at $t+1$ in the Intellidex Dynamic Leisure and Enerteinment index (DZL). The core idea is to backtest a trading rule based on the forecasted volatility of the DZL index to invest in the Invesco Leisure and Entertainment exchange traded fund (ETF) (PEJ) or in 3-month U.S. Treasury bills, depending on the forecasted volatility regime. The following trading rule summarises the trading strategy:
 
 $$
 S_t=\left\{
 \begin{array}{l}
-\text{Sell if } \xi_{s=2,t} > 0.5 \\
-\text{Buy or hold if } \xi_{s=2,t} \leq 0.5
+\text{To buy 3-month U.S. Treasury bills if } \xi_{s=2,t} > 0.5 \\
+\text{To Buy the PEJ if } \xi_{s=2,t} \leq 0.5
 \end{array} \right.
 $${#eq-msModelTag}
 
 The core idea is to estimate the probability $\xi_{s=2,t+1}$ from a sequential selection of the MS-GARCH models of the following at $t$::
 
 1. A symmetric Student-T log-likelihood function (LLF) with a homogeneous time-fixed volatility.
-2. A symmetric Student-T log-likelihood function (LLF) with a homogeneous symmetric GARCH volatility.
-3. An symmetric Student-T log-likelihood function (LLF) with a homogeneous asymmetric EGARCH volatility.
-4. An asymmetric Student-T log-likelihood function (LLF) with a homogeneous time-fixed volatility.
-5. An asymmetric Student-T log-likelihood function (LLF) with a homogeneous symmetric GARCH volatility.
-6. An asymmetric Student-T log-likelihood function (LLF) with a homogeneous asymmetric EGARCH volatility.
+2. A symmetric Student-T LLF with a homogeneous symmetric GARCH volatility.
+3. An symmetric Student-T LLF with a homogeneous asymmetric EGARCH volatility.
+4. An asymmetric Student-T LLF with a homogeneous time-fixed volatility.
+5. An asymmetric Student-T LLF with a homogeneous symmetric GARCH volatility.
+6. An asymmetric Student-T LLF with a homogeneous asymmetric EGARCH volatility.
 
 From these models, the authors selected the one with the lowest Akaike [-@Royall1997] value and use it to estimate the probability $\xi_{s=2,t+1}$ of being in the high volatility regime at $t+1$ as follows:
 
@@ -44,6 +47,7 @@ $${#eq-smoothProbForecast}
 Where $\pi$ is the transition matrix of the Markov-switching model, $\xi_{s=1,t}$ is the smoothed probability of being in the low volatility regime at $t$, and $\xi_{s=2,t}$ is the probability of being in the high volatility regime at $t$.
 
 This supplementary material's site is structured with the following sections:
+
 - [Data gathering and processing](datagathering.qmd): Details the data gathering and processing steps.
 - [Markov-switching model estimation, trading backtest and results](results.qmd): Details the steps to estimate the Markov-switching model and the trading rule and executes the code to estimate the model and the trading rule.
 - [References](references.qmd): Lists the references used in this site.
