@@ -14,8 +14,8 @@ The present site gives a detail of how did the authors collected and processed t
 $$
 S_t=\left\{
 \begin{array}{l}
-\text{To buy 3-month U.S. Treasury bills if } \xi_{s=2,t} > 0.5 \\
-\text{To Buy the PEJ if } \xi_{s=2,t} \leq 0.5
+\text{To sell the PEJ position if } \xi_{s=2,t} > 0.5 \\
+\text{To Buy a PEJ if } \xi_{s=2,t} \leq 0.5
 \end{array} \right.
 $${#eq-msModelTag}
 

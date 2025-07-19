@@ -2,24 +2,36 @@
 title: "Data gathering and processing"
 format: html
 ---
+# Data gathering and processing
 
-```{r libresriesSetup, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
-source("https://drive.google.com/uc?export=download&id=12rhI5aMny5hRGhdORztYpNZ2YbJi4wmA")
+## Required R libraries
+
+These are the necessary libraries to run the tests:
+
+```{r librariesSetup, eval=FALSE}
+source("https://raw.githubusercontent.com/OscarVDelatorreTorres/softwareInvestigacion/refs/heads/main/R/dataGatheringLibraries.R")
 ```
+
+```{r librariesSetup2, include=FALSE, error=FALSE, message=FALSE, warning=FALSE}
+source("https://raw.githubusercontent.com/OscarVDelatorreTorres/softwareInvestigacion/refs/heads/main/R/dataGatheringLibraries.R")
+cat("\f") # Clears the console for Quarto compilation.
+```
+
+## Input data gathering and processing
 
 To perform the simulations, the authors retrieved the weekly historical data of the following time series from Refinitiv [-@refinitivRefinitivEikon2025]:
 
-
 :::{#tbl-Table1}
-```{r table1, echo=FALSE}
-table1=data.frame(tickerPaper=c("DZL","PEJ","BIL"),
+
+```{r table1, include=FALSE, error=FALSE, message=FALSE, warning=FALSE}
+table1=data.frame(tickerPaper=c("DZL","PEJ"),
                   name=c("Intellidex Dynamic Leisure and Enerteinment index",
-                         "Invesco Dynamic Leisure and Entertainment ETF",
-                         "SPDR Bloomberg 1-3 Month T-Bill ETF"),
-                  startDate=c("2005-06-05","2005-06-05","2025-05-07"),
-                  endDate=c("2025-07-14","2025-07-14","2025-07-14")
+                         "Invesco Dynamic Leisure and Entertainment ETF"),
+                  startDate=c("2005-06-05","2005-06-05"),
+                  endDate=c("2025-07-14","2025-07-14")
                   )
 datatable(table1, 
+          colnames = c("Ticker", "Name", "Start Date", "End Date"),
               extensions = 'Buttons',
               options = list(dom = 'Bfrtip',
             buttons = 
@@ -29,17 +41,52 @@ datatable(table1,
         text = 'Download'
               ))),
               rownames = FALSE,
-              caption = "Table 1: Time series used in the simulations")
+              caption = "")
 ```
+
+Time series used in the simulations
 :::
 
-@#tbl-Table2 shows the data gatered and ##tbl-Table3 shows the statistical summary of the input data.
+
+@tbl-Table2 shows the data gatered ([you can download the input data excel file in this link](inputData/inputData.xlsx)) and @tbl-Table3 shows the statistical summary of the input data.
+
 
 :::{#tbl-Table2}
-```{r table2, echo=FALSE}
+
+```{r table2, error=FALSE, message=FALSE, warning=FALSE}
 table2=read.xlsx("inputData/inputdata.xlsx")
+# Ensures the "NaN" character is set as NA:
+table2=as.data.frame(lapply(table2,function(x) {
+rowNaNId=which(x=="NaN")
+  if (length(rowNaNId)>0){
+    x[rowNaNId]=NA
+  }
+  return(x)
+}))
+
+# Ensures that all the columns are numeric:
+table2=as.data.frame(lapply(table2,function(x) {
+  if (is.character(x)) {
+    x <- as.numeric(x)
+  }
+  return(x)
+}))
+
+# Transform the Date vector into a date class:
 table2$Date=as.Date(table2$Date,origin="1899-12-30")
+
+# Fill the NA values with the last observation carried forward (LOCF) method:
+
+table2=as.data.frame(lapply(table2,function(x) {
+    x=imputeTS::na_locf(x)
+  return(x)
+}))
+
+
+cat("\f") # Clears the console for compilation:
+# Displays the data:
 datatable(table2, 
+          colnames = c("Date", "PEJ", "DZL"),
               extensions = 'Buttons',
               options = list(dom = 'Bfrtip',
             buttons = 
@@ -49,15 +96,210 @@ datatable(table2,
         text = 'Download'
               ))),
               rownames = FALSE,
-              caption = "Table 2: Historical price (level) data of the time series used in the simulations")
+              caption = "")
+
 ```
 
-
+Historical price (level) data of the time series used in the simulations
 :::
+
+
+
+The following table shows the base 100 values of these indices:
+
+
+:::{#tbl-Table2b100}
+
+
+```{r table2b100, echo=FALSE, error=FALSE, message=FALSE, warning=FALSE}
+table2b100=table2
+# Estimate the base 100 values of the time series:
+table2b100[,2:ncol(table2b100)]=as.data.frame(lapply(table2b100[,2:ncol(table2b100)],function(x) {
+x=x/x[1]*100
+  return(x)
+}))
+
+
+cat("\f") # Clears the console for compilation:
+# Displays the data:
+datatable(table2b100, 
+          colnames = c("Date", "PEJ", "DZL"),
+              extensions = 'Buttons',
+              options = list(dom = 'Bfrtip',
+            buttons = 
+      list('copy', 'print', list(
+        extend = 'collection',
+        buttons = c('csv', 'excel', 'pdf'),
+        text = 'Download'
+              ))),
+              rownames = FALSE,
+              caption = "")
+
+```
+
+Historical price (base 100) data of the time series used in the simulations
+:::
+
 
 
 :::{#tbl-Table3}
 
+```{r table3, echo=FALSE, error=FALSE, message=FALSE, warning=FALSE}
+table3=table2
+table3=gather(table3, key = "Ticker", value = "Price", -Date)
+table3=table3 %>%
+  group_by(Ticker) %>%
+  summarise(mean=mean(Price,na.rm=TRUE),
+            sd=sd(Price,na.rm=TRUE),
+            min=min(Price,na.rm=TRUE),
+            max=max(Price,na.rm=TRUE),
+            median=median(Price,na.rm=TRUE),
+            q25=quantile(Price,0.25,na.rm=TRUE),
+            q75=quantile(Price,0.75,na.rm=TRUE))
 
+datatable(table3, 
+colnames = c("Ticker", "Mean", "Standard Deviation", "Minimum", "Maximum", "Median", "Q25", "Q75"), 
+              extensions = 'Buttons',
+              options = list(dom = 'Bfrtip',
+ buttons = 
+      list('copy', 'print', list(
+        extend = 'collection',
+        buttons = c('csv', 'excel', 'pdf'),
+        text = 'Download'
+              ))),
+              rownames = FALSE,
+              caption = "")%>%
+  formatRound(columns = 2:ncol(table3), digits = 4)                        
+```
 
+Statistical summary of the input variables
 :::
+
+
+The following table shows the continous time return ($r_t=ln(P_t)-ln(P_{t-1})$) values:
+
+
+:::{#tbl-Table4}
+
+```{r table4}
+table4=table2
+# Estimates the continuous time returns in the time series (not dae) of interest:
+for (a in 2:ncol(table4)){
+  noNaRowId=which(!is.na(table4[,a]))
+  table4[noNaRowId,a]=c(0,diff(log(table4[noNaRowId,a]),1))
+}
+# Displays the resulting data table:
+datatable(table4,
+              extensions = 'Buttons',
+              options = list(dom = 'Bfrtip',
+ buttons = 
+      list('copy', 'print', list(
+        extend = 'collection',
+        buttons = c('csv', 'excel', 'pdf'),
+        text = 'Download'
+              ))),
+              rownames = FALSE,
+              caption = "")%>%
+  formatRound(columns = 2:ncol(table4), digits = 4)  
+```
+
+Continuous time return of the time series (%)
+:::
+
+
+
+The following Figure shows the price $P_t$ time series in the upper panel, and the continuous time returns $r_t$ in the lower one. As noted, the PEJ ETF has a close tracking of the DZL index, which is the underlying index of the ETF. The continuous time returns are also very similar, with a small difference in the volatility of the returns. Consequently, this ETF is an appropriate investment vehicle to replicate the performance of the DZL index and for the simulations of interest.
+
+
+:::{#fig-figure1}
+
+```{r figure1, echo=FALSE, error=FALSE, message=FALSE, warning=FALSE}
+# Applies the gather function to the data frames to prepare them for plotting:
+table2Gathered=gather(table2b100, key = "Ticker", value = "Price", -Date)
+table4Gathered=gather(table4, key = "Ticker", value = "Price", -Date)
+
+# Plots the price time series:
+fig1a=plot_ly()%>%add_lines(data = table2Gathered, 
+                        x = ~Date, 
+                        y = ~Price, 
+                        color = ~Ticker,
+                        name = ~Ticker,
+                        legendgroup = ~Ticker,
+                        type = "scatter",
+                        mode = "lines")%>%
+  layout(title = "Price time series",
+         xaxis = list(title = "Date"),
+         yaxis = list(title = "Price"),
+         legend = list(title=list(text="Ticker")))
+
+# Plots the continuous time returns:
+fig1b=plot_ly()%>%add_lines(data = table4Gathered, 
+                        x = ~Date, 
+                        y = ~Price, 
+                        color = ~Ticker,
+                        name = ~Ticker,
+                        legendgroup = ~Ticker,
+                        type = "scatter",
+                        mode = "lines",
+                        showlegend = FALSE)%>%
+  layout(title = "",
+         xaxis = list(title = "Date"),
+         yaxis = list(title = ""),
+         legend = list(title=list(text="Ticker")))
+
+fig1=subplot(fig1a, fig1b, nrows = 2, shareX = TRUE, shareY = TRUE, titleY = TRUE)
+fig1
+```
+
+Continuous time return time series
+:::
+
+
+## Probability function specification
+
+The following table shows the p-values of the Jarque-Bera, and the Kolmogorov-Smirnov test for normality or Student-T probability functions in the return time series.
+
+
+:::{#tbl-Table5}
+
+```{r table5, echo=FALSE, error=FALSE, message=FALSE, warning=FALSE}
+table5=table4[,2:ncol(table4)]
+ticker=colnames(table5)
+table5=data.frame(Ticker=ticker,
+                  JarqueBera=NA,
+                  KolmogorovSmirnovGauss=NA,
+                  KolmogorovSmirnovStudentT=NA)
+for (a in 2:(ncol(table5)-1)){
+  if (a==1){
+    next
+  }
+  # Estimates the Jarque-Bera test:
+  table5[a-1,2]=tseries::jarque.bera.test(table4[,a])$p.value
+  # Estimates the Kolmogorov-Smirnov test for normality:
+  table5[a-1,3]=ks.test(table4[,a], "pnorm", mean=mean(table4[,a],na.rm=TRUE), sd=sd(table4[,a],na.rm=TRUE))$p.value
+  # Estimates the Kolmogorov-Smirnov test for Student-T distribution:
+  table5[a-1,4]=ks.test(table4[,a], "pt", df=length(na.omit(table4[,a]))-1, 
+                      ncp=mean(table4[,a],na.rm=TRUE)/sd(table4[,a],na.rm=TRUE))$p.value
+}
+datatable(table5, 
+          colnames = c("Ticker", "Jarque-Bera", "Kolmogorov-Smirnov Gauss", "Kolmogorov-Smirnov Student-T"),
+              extensions = 'Buttons',
+              options = list(dom = 'Bfrtip',
+            buttons = 
+      list('copy', 'print', list(
+        extend = 'collection',
+        buttons = c('csv', 'excel', 'pdf'),
+        text = 'Download'
+              ))),
+              rownames = FALSE,
+              caption = "")%>%
+  formatRound(columns = 2:ncol(table5), digits = 4)
+```
+
+P-values of the pdf goodness of fit tests for the return time series
+:::
+
+
+The results show that the return time series of the PEJ ETF and the DZL index are not normally distributed, and the Student-T distribution is a not a better fit for the data. Consequently, the authors used the Student-T distribution to estimate the Markov-switching GARCH model because of its sample properties and the fact that it is a common distribution used in financial time series analysis.
+
+

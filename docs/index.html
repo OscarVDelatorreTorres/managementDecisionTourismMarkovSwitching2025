@@ -257,7 +257,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data gathering and processing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">References</span></span></a>
   </div>
 </li>
       </ul>
@@ -294,12 +294,12 @@ window.Quarto = {
 <section id="introduction" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
 <p>This site is for the research documentation published in a private GitHub repository for replication purposes and as supplementary material for the paper <strong>A two-regime Markov-switching, new sentiment multinomial algorithm for leisure and entertainment tourism stocks</strong>, published in the journal <a href="https://www.emerald.com/insight/publication/issn/0025-1747">Management decision in the **** special number</a>.</p>
-<p>The present site gives a detail of how did the authors collected and processed the input data and gives to the reader the steps and <code>R</code> code used to estimate the Markov-switching GARCH <span class="citation" data-cites="Hamitlon1989 Haas2004a Haas2004a Ardia2018 Ardia2018 Ardia2016">(<a href="#ref-Hamitlon1989" role="doc-biblioref">Hamilton 1989</a>; <a href="#ref-Haas2004a" role="doc-biblioref">Haas, Mittnik, and Paolella 2004</a>, <a href="#ref-Haas2004a" role="doc-biblioref">2004</a>; <a href="#ref-Ardia2018" role="doc-biblioref">Ardia et al. 2018</a>, <a href="#ref-Ardia2018" role="doc-biblioref">2018</a>, <a href="#ref-Ardia2016" role="doc-biblioref">2019</a>)</span> model to forecast the probability <span class="math inline">\(\xi_{s=2,t+1}\)</span> of being in the high volatility regime at <span class="math inline">\(t+1\)</span> in the Intellidex Dynamic Leisure and Enerteinment index (DZL). The core idea is to backtest a trading rule based on the forecasted volatility of the DZL index to invest in the Invesco Leisure and Entertainment exchange traded fund (ETF) (PEJ) or in 3-month U.S. Treasury bills, depending on the forecasted volatility regime. The following trading rule summarises the trading strategy:</p>
+<p>The present site gives a detail of how did the authors collected and processed the input data and gives to the reader the steps and <code>R</code> code used to estimate the Markov-switching GARCH <span class="citation" data-cites="Hamitlon1989 Haas2004a Haas2004a Ardia2018 Ardia2018 Ardia2016">(<a href="references.html#ref-Hamitlon1989" role="doc-biblioref">Hamilton 1989</a>; <a href="references.html#ref-Haas2004a" role="doc-biblioref">Haas, Mittnik, and Paolella 2004</a>, <a href="references.html#ref-Haas2004a" role="doc-biblioref">2004</a>; <a href="references.html#ref-Ardia2018" role="doc-biblioref">Ardia et al. 2018</a>, <a href="references.html#ref-Ardia2018" role="doc-biblioref">2018</a>, <a href="references.html#ref-Ardia2016" role="doc-biblioref">2019</a>)</span> model to forecast the probability <span class="math inline">\(\xi_{s=2,t+1}\)</span> of being in the high volatility regime at <span class="math inline">\(t+1\)</span> in the Intellidex Dynamic Leisure and Enerteinment index (DZL). The core idea is to backtest a trading rule based on the forecasted volatility of the DZL index to invest in the Invesco Leisure and Entertainment exchange traded fund (ETF) (PEJ) or in 3-month U.S. Treasury bills, depending on the forecasted volatility regime. The following trading rule summarises the trading strategy:</p>
 <p><span id="eq-msModelTag"><span class="math display">\[
 S_t=\left\{
 \begin{array}{l}
-\text{To buy 3-month U.S. Treasury bills if } \xi_{s=2,t} &gt; 0.5 \\
-\text{To Buy the PEJ if } \xi_{s=2,t} \leq 0.5
+\text{To sell the PEJ position if } \xi_{s=2,t} &gt; 0.5 \\
+\text{To Buy a PEJ if } \xi_{s=2,t} \leq 0.5
 \end{array} \right.
 \tag{1.1}\]</span></span></p>
 <p>The core idea is to estimate the probability <span class="math inline">\(\xi_{s=2,t+1}\)</span> from a sequential selection of the MS-GARCH models of the following at <span class="math inline">\(t\)</span>::</p>
@@ -311,7 +311,7 @@ S_t=\left\{
 <li>An asymmetric Student-T LLF with a homogeneous symmetric GARCH volatility.</li>
 <li>An asymmetric Student-T LLF with a homogeneous asymmetric EGARCH volatility.</li>
 </ol>
-<p>From these models, the authors selected the one with the lowest Akaike <span class="citation" data-cites="Royall1997">(<a href="#ref-Royall1997" role="doc-biblioref">1974</a>)</span> value and use it to estimate the probability <span class="math inline">\(\xi_{s=2,t+1}\)</span> of being in the high volatility regime at <span class="math inline">\(t+1\)</span> as follows:</p>
+<p>From these models, the authors selected the one with the lowest Akaike <span class="citation" data-cites="Royall1997">(<a href="references.html#ref-Royall1997" role="doc-biblioref">1974</a>)</span> value and use it to estimate the probability <span class="math inline">\(\xi_{s=2,t+1}\)</span> of being in the high volatility regime at <span class="math inline">\(t+1\)</span> as follows:</p>
 <p><span id="eq-smoothProbForecast"><span class="math display">\[
 \left[
 \begin{array}{l}
@@ -334,7 +334,7 @@ S_t=\left\{
 </ul>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
 <div id="ref-Royall1997" class="csl-entry" role="listitem">
 Akaike, Hirotugu. 1974. <span>“A New Look at the Statistical Model Identification.”</span> <em>IEEE Transactions on Automatic Control</em> 19 (6): 716–23. <a href="https://doi.org/10.1016/J.CUB.2017.09.001">https://doi.org/10.1016/J.CUB.2017.09.001</a>.
 </div>
